@@ -19,8 +19,7 @@ const Form = () => {
       url: `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`,
       headers: {
         Accept: 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI',
       },
     }).then((response) => {
       setSearchedMovieList(response.data.results);
@@ -140,9 +139,7 @@ const Form = () => {
         <>
           <div className='search-container'>
             Search Movie:
-            <input
-              type='text' onChange={(e) => setQuery(e.target.value)}
-            />
+            <input type='text' onChange={(e) => setQuery(e.target.value)} />
             <button type='button' onClick={handleSearch}>
               Search
             </button>
@@ -154,7 +151,6 @@ const Form = () => {
               ))}
             </div>
           </div>
-          
         </>
       )}
       <hr />
@@ -172,7 +168,7 @@ const Form = () => {
             <input
               type='text'
               name='title'
-              value={movie.title || ''} 
+              value={movie.title || ''}
               onChange={handleChange}
             />
             {errors.title && <span className='error'>{errors.title}</span>}
@@ -218,7 +214,7 @@ const Form = () => {
               onChange={handleChange}
             />
           </div>
-          
+
           <div className='butt'>
             <button type='button' onClick={handleSave}>
               Save
