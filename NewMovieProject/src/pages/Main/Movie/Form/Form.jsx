@@ -4,59 +4,33 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './Form.css';
 
 const Form = () => {
-  const [query, setQuery] = useState('');
-  const [searchedMovieList, setSearchedMovieList] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(undefined);
-  const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState({
+    title: '',
+    overview: '',
+    popularity: '',
+    releaseDate: '',
+    voteAverage: '',
+    backdropPath: '',
+    posterPath: '',
+  });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   let { movieId } = useParams();
   const accessToken = localStorage.getItem('accessToken');
 
-  const handleSearch = useCallback(() => {
-    axios({
-      method: 'get',
-      url: `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`,
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI',
-      },
-    }).then((response) => {
-      setSearchedMovieList(response.data.results);
-      console.log(response.data.results);
-    });
-  }, [query]);
-
-  const handleSelectMovie = (movie) => {
-    setSelectedMovie(movie);
-    setMovie({
-      tmdbId: movie.id,
-      title: movie.original_title,
-      overview: movie.overview,
-      popularity: movie.popularity,
-      releaseDate: movie.release_date,
-      voteAverage: movie.vote_average,
-      backdropPath: movie.backdrop_path,
-      posterPath: movie.poster_path,
-    });
-  };
-
   const handleSave = async () => {
-    if (!selectedMovie) {
-      alert('Please search and select a movie.');
-      return;
-    }
+    if (!validateForm()) return; 
 
     const data = {
-      tmdbId: selectedMovie.id,
-      title: selectedMovie.original_title,
-      overview: selectedMovie.overview,
-      popularity: selectedMovie.popularity,
-      releaseDate: selectedMovie.release_date,
-      voteAverage: selectedMovie.vote_average,
-      backdropPath: `https://image.tmdb.org/t/p/original/${selectedMovie.backdrop_path}`,
-      posterPath: `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`,
-      isFeatured: selectedMovie.isFeatured ? 1 : 0,
+      tmdbId: movie.tmdbId || null,
+      title: movie.title,
+      overview: movie.overview,
+      popularity: movie.popularity,
+      releaseDate: movie.releaseDate,
+      voteAverage: movie.voteAverage,
+      backdropPath: movie.backdropPath,
+      posterPath: movie.posterPath,
+      isFeatured: movie.isFeatured ? 1 : 0,
     };
 
     try {
@@ -65,11 +39,22 @@ const Form = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(response);
-      alert('Success');
-      navigate('/main/movies');
+      console.log('Response from API:', response.data);
+      alert('Movie added successfully');
+
+     
+      setMovie({
+        title: '',
+        overview: '',
+        popularity: '',
+        releaseDate: '',
+        voteAverage: '',
+        backdropPath: '',
+        posterPath: '',
+      });
     } catch (error) {
-      console.error(error);
+      console.error('Error saving movie:', error.response ? error.response.data : error.message);
+      alert('Failed to add movie. Please try again.');
     }
   };
 
@@ -81,7 +66,7 @@ const Form = () => {
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: '', // Clear the specific field error if it exists
+      [name ]: '', 
     }));
   };
 
@@ -91,6 +76,7 @@ const Form = () => {
     if (!movie.overview?.trim()) newErrors.overview = 'Overview is required';
     if (!movie.releaseDate) newErrors.releaseDate = 'Release date is required';
     setErrors(newErrors);
+    console.log('Validation errors:', newErrors); 
     return Object.keys(newErrors).length === 0;
   };
 
@@ -103,9 +89,9 @@ const Form = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(response);
+      console.log('Update response:', response.data);
       alert('Movie details updated successfully');
-      navigate('/main/movies');
+      navigate('/main/movies'); 
     } catch (error) {
       console.error('Error updating movie details:', error);
       alert('Failed to update movie details. Please try again.');
@@ -116,17 +102,9 @@ const Form = () => {
     if (movieId) {
       axios.get(`/movies/${movieId}`).then((response) => {
         setMovie(response.data);
-        const tempData = {
-          id: response.data.tmdbId,
-          original_title: response.data.title,
-          overview: response.data.overview,
-          popularity: response.data.popularity,
-          poster_path: response.data.posterPath,
-          release_date: response.data.releaseDate,
-          vote_average: response.data.voteAverage,
-        };
-        setSelectedMovie(tempData);
-        console.log(response.data);
+        console.log('Fetched movie data:', response.data);
+      }).catch((error) => {
+        console.error('Error fetching movie details:', error);
       });
     }
   }, [movieId]);
@@ -135,34 +113,9 @@ const Form = () => {
     <>
       <h1>{movieId ? 'Edit' : 'Create'} Movie</h1>
 
-      {movieId === undefined && (
-        <>
-          <div className='search-container'>
-            Search Movie:
-            <input type='text' onChange={(e) => setQuery(e.target.value)} />
-            <button type='button' onClick={handleSearch}>
-              Search
-            </button>
-            <div className='searched-movie'>
-              {searchedMovieList.map((movie) => (
-                <p key={movie.id} onClick={() => handleSelectMovie(movie)}>
-                  {movie.original_title}
-                </p>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
       <hr />
       <div className='movie-container'>
         <form>
-          {selectedMovie && (
-            <img
-              className='poster-image'
-              src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
-              alt={selectedMovie.original_title}
-            />
-          )}
           <div className='field'>
             Title:
             <input

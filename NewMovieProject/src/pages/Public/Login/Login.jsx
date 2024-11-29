@@ -54,7 +54,7 @@ function Login() {
       .then((res) => {
         console.log(res);
         localStorage.setItem('accessToken', res.data.access_token);
-        navigate('/main/movies');
+        navigate('/main');
         setStatus('idle');
       })
       .catch((e) => {

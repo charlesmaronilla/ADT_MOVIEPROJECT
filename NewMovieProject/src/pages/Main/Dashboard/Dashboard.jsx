@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import './Dashboard.css'; // Ensure you have the CSS file for styling
+import { useNavigate } from 'react-router-dom'; 
+import './Dashboard.css';
 
 const Dashboard = () => {
+  const navigate = useNavigate(); 
   const [query, setQuery] = useState('');
   const [searchedMovieList, setSearchedMovieList] = useState([]);
-  const [availableMovies, setAvailableMovies] = useState([]); // State for available movies
+  const [availableMovies, setAvailableMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  // Fetch popular movies on component mount
+ 
   useEffect(() => {
     const fetchAvailableMovies = async () => {
       try {
@@ -20,7 +22,6 @@ const Dashboard = () => {
             },
           }
         );
-        // Sort movies by popularity and take the top 10
         const topMovies = response.data.results.sort((a, b) => b.popularity - a.popularity).slice(0, 10);
         setAvailableMovies(topMovies);
       } catch (error) {
@@ -31,12 +32,12 @@ const Dashboard = () => {
     fetchAvailableMovies();
   }, []);
 
-  // Handle search for movies
+  
   const handleSearch = useCallback(() => {
-    if (!query) return; // Avoid empty search
+    if (!query) return;
     axios({
       method: 'get',
-      url: `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`,
+      url: `https://api.themoviedb.org/3/ search/movie?query=${query}&include_adult=false&language=en-US&page=1`,
       headers: {
         Accept: 'application/json',
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI',
@@ -48,19 +49,24 @@ const Dashboard = () => {
     });
   }, [query]);
 
-  // Handle movie selection
+  
   const handleSelectMovie = (movie) => {
     setSelectedMovie(movie);
-    window.scrollTo(0, 0); // Scroll to the top when a movie is selected
+    window.scrollTo(0, 0);
   };
 
   return (
     <div className="dashboard">
       <h1>Admin Dashboard</h1>
 
+     
+      <button onClick={() => navigate('/main/movies/lists')} className="navigate-button">
+        Go to Movie Lists
+      </button>
+
       {selectedMovie && (
         <div className="selected-movie">
-          <h2>Selected Movie Details</h2>
+          <h2> Selected Movie Details</h2>
           <img
             className="poster-image"
             src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}

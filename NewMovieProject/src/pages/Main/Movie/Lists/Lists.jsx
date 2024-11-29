@@ -1,17 +1,21 @@
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Lists.css';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
+import './Lists.css';
 
 const Lists = () => {
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const [lists, setLists] = useState([]);
 
-  // Fetch movies from the API
+
   const getMovies = () => {
     axios
-      .get('/movies')
+      .get('/movies', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((response) => {
         setLists(response.data);
       })
@@ -34,7 +38,6 @@ const Lists = () => {
           },
         })
         .then(() => {
-          // Optimized delete logic: filter the movie out of the list
           setLists((prevLists) => prevLists.filter((movie) => movie.id !== id));
         })
         .catch((error) => {
@@ -44,15 +47,20 @@ const Lists = () => {
     }
   };
 
+
+  const handleCreate = () => {
+    navigate('/main/movies/form'); 
+  };
+
+
+  const handleEdit = (movieId) => {
+    navigate(`/main/movies/form/${movieId}`);
+  };
+
   return (
     <div className="lists-container">
       <div className="create-container">
-        <button
-          type="button"
-          onClick={() => {
-            navigate('/main/movies/form');
-          }}
-        >
+        <button type="button" onClick={handleCreate}>
           Create New
         </button>
       </div>
@@ -72,12 +80,7 @@ const Lists = () => {
                 <td>{movie.id}</td>
                 <td>{movie.title}</td>
                 <td>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigate(`/main/movies/form/${movie.id}`);
-                    }}
-                  >
+                  <button type="button" onClick={() => handleEdit(movie.id)}>
                     Edit
                   </button>
                   <button type="button" onClick={() => handleDelete(movie.id)}>

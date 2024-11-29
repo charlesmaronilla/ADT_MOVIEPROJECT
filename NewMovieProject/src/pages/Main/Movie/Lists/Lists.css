@@ -2,16 +2,81 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 2rem; 
+  background-color: #f9f9f9; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
 }
+
 .create-container {
   align-self: flex-end;
   margin: 1rem 0;
+  background-color: #007bff; 
+  color: white; 
+  padding: 0.5rem 1rem; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s; 
 }
+
+.create-container:hover {
+  background-color: #0056b3; 
+}
+
 .table-container,
 .movie-lists {
   width: 100%;
+  margin-top: 1rem; 
 }
 
 .table-container {
   text-align: center;
+  border-collapse: collapse; 
+  width: 100%;
+  background-color: white; 
+  border-radius: 8px; 
+  overflow: auto; 
+  max-height: 400px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+.table-container th,
+.table-container td {
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table-container th {
+  background-color: #007bff;
+  color: white; 
+  font-weight: bold; 
+}
+
+.table-container tr:hover {
+  background-color: #f1f1f1; 
+}
+
+.movie-lists {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1rem; 
+  max-height: 400px; 
+  overflow-y: auto; 
+  padding: 1rem; 
+  border: 1px solid #e0e0e0; 
+  border-radius: 8px;
+  background-color: #fff; 
+}
+
+.movie-list-item {
+  background-color: #fff; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  padding: 1rem; 
+  flex: 1 1 calc(25% - 1rem);
+  transition: transform 0.2s; 
+}
+
+.movie-list-item:hover {
+  transform: scale(1.05); 
 }
