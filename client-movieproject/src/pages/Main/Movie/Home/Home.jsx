@@ -1,45 +1,50 @@
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCards from '../../../../components/MovieCards/MovieCards';
 import { useMovieContext } from '../../../../context/MovieContext';
+
 const Home = () => {
-  const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const [featuredMovie, setFeaturedMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { movieList, setMovieList, setMovie } = useMovieContext();
 
-  const getMovies = () => {
-    //get the movies from the api or database
-    axios
-      .get('/movies')
-      .then((response) => {
-        setMovieList(response.data);
-        const random = Math.floor(Math.random() * response.data.length);
-        setFeaturedMovie(response.data[random]);
-      })
-      .catch((e) => console.log(e));
+  const getMovies = async () => {
+    try {
+      const response = await axios.get('/movies');
+      setMovieList(response.data);
+      const randomIndex = Math.floor(Math.random() * response.data.length);
+      setFeaturedMovie(response.data[randomIndex]);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   useEffect(() => {
     getMovies();
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    const interval = setInterval(() => {
       if (movieList.length) {
-        console.log('change movie');
-        const random = Math.floor(Math.random() * movieList.length);
-        setFeaturedMovie(movieList[random]);
+        const randomIndex = Math.floor(Math.random() * movieList.length);
+        setFeaturedMovie(movieList[randomIndex]);
       }
     }, 5000);
-    return;
-  }, [featuredMovie]);
+
+    return () => clearInterval(interval); 
+  }, [movieList]);
 
   return (
     <div className='main-container'>
       <h1 className='page-title'>Movies</h1>
-      {featuredMovie && movieList.length ? (
+      {loading ? (
+        <div className='loading-indicator'>Loading...</div> 
+      ) : featuredMovie && movieList.length ? (
         <div className='featured-list-container'>
           <div
             className='featured-backdrop'
@@ -56,19 +61,18 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <div className='featured-list-container-loader'></div>
+        <div className='featured-list-container-loader'>No movies available</div>
       )}
       <div className='list-container'>
         {movieList.map((movie) => (
-          <>
-            <MovieCards
-              movie={movie}
-              onClick={() => {
-                navigate(`/view/${movie.id}`);
-                setMovie(movie);
-              }}
-            />
-          </>
+          <MovieCards
+            key={movie.id} 
+            movie={movie}
+            onClick={() => {
+              navigate(`/view/${movie.id}`);
+              setMovie(movie);
+            }}
+          />
         ))}
       </div>
     </div>

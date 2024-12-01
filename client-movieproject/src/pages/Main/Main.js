@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, Link } from 'react-router-dom';
 import './Main.css';
 
 function Main() {
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
+    navigate('/'); 
   };
 
   useEffect(() => {
@@ -17,22 +19,23 @@ function Main() {
     ) {
       handleLogout();
     }
-  }, []);
+  }, [accessToken]);
+
   return (
     <div className='Main'>
       <div className='container'>
         <div className='navigation'>
           <ul>
             <li>
-              <a onClick={() => navigate('/')}>Movies</a>
+              <Link to="/">Movies</Link>
             </li>
             {accessToken ? (
               <li className='logout'>
-                <a onClick={handleLogout}>Logout</a>
+                <a href="/" onClick={handleLogout}>Logout</a> 
               </li>
             ) : (
               <li className='login'>
-                <a onClick={() => alert('Go to Login page')}>Login</a>
+                <Link to="/login">Login</Link> 
               </li>
             )}
           </ul>
