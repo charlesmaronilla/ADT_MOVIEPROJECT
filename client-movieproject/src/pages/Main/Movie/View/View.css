@@ -9,10 +9,10 @@ body {
 
   .card {
     max-width: 300px; 
-    border: 20px solid #898989;
-    background-color: #898989;
+    border: 20px solid #4c418a;
+    background-color: #3c2d92;
     border-radius: 8px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0 4px 10px rgba(118, 41, 169, 0.2); 
     transition: transform 0.3s ease, background-color 0.3s ease; 
     overflow: hidden; 
     margin: 20px; 
@@ -45,8 +45,8 @@ body {
   
   
   .card:hover {
-    border: 20px solid #3f3f3f;
-    background-color: #3f3f3f;
+    border: 20px solid #5d4986;
+    background-color: #5d4986;
     transform: translateY(-5px); 
   }
   

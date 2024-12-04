@@ -14,7 +14,7 @@ function Login() {
   const userInputDebounce = useDebounce({ email, password }, 2000);
   const [debounceState, setDebounceState] = useState(false);
   const [status, setStatus] = useState('idle');
-  const [error, setError] = useState('');
+
   const navigate = useNavigate();
 
   const handleShowPassword = useCallback(() => {
@@ -28,13 +28,10 @@ function Login() {
     switch (type) {
       case 'email':
         setEmail(event.target.value);
-
         break;
-
       case 'password':
         setPassword(event.target.value);
         break;
-
       default:
         break;
     }
@@ -44,25 +41,30 @@ function Login() {
     const data = { email, password };
     setStatus('loading');
 
-    await axios({
-      method: 'post',
-      url: '/admin/login',
-      data,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => {
+    try {
+      await axios({
+        method: 'post',
+        url: '/user/login',
+        data,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+      }).then((res) => {
         console.log(res);
-    
         localStorage.setItem('accessToken', res.data.access_token);
-        navigate('/main/movies');
-        setStatus('idle');
-      })
-      .catch((e) => {
-        setError(e.response.data.message);
-        console.log(e);
-        setStatus('idle');
-        
+
+        // Ensure the spinner is shown for 3 seconds
+        setTimeout(() => {
+          setStatus('idle');
+          navigate('/home');
+        }, 3000);
       });
+    } catch (e) {
+      console.log(e);
+
+      // Ensure the spinner is shown for 3 seconds even on error
+      setTimeout(() => {
+        setStatus('idle');
+      }, 3000);
+    }
   };
 
   useEffect(() => {
@@ -72,11 +74,9 @@ function Login() {
   return (
     <div className='Login'>
       <div className='main-container'>
+        <h3>Sign In</h3>
         <form>
           <div className='form-container'>
-            <h3>Login</h3>
-
-            {error && <span className='login errors'>{error}</span>}
             <div>
               <div className='form-group'>
                 <label>E-mail:</label>
@@ -111,30 +111,30 @@ function Login() {
 
             <div className='submit-container'>
               <button
+                className='btn-primary'
                 type='button'
                 disabled={status === 'loading'}
                 onClick={() => {
-                  if (status === 'loading') {
-                    return;
-                  }
                   if (email && password) {
+                    setStatus('loading');
                     handleLogin();
                   } else {
                     setIsFieldsDirty(true);
-                    if (email === '') {
-                      emailRef.current.focus();
-                    }
-
-                    if (password === '') {
-                      passwordRef.current.focus();
-                    }
+                    if (email === '') emailRef.current.focus();
+                    if (password === '') passwordRef.current.focus();
                   }
                 }}
               >
-                {status === 'idle' ? 'Login' : 'Loading'}
+                {status === 'loading' ? (
+                  <div className="loading-spinner"></div>
+                ) : (
+                  'Login'
+                )}
               </button>
             </div>
+
             <div className='register-container'>
+              <small>Don't have an account? </small>
               <a href='/register'>
                 <small>Register</small>
               </a>

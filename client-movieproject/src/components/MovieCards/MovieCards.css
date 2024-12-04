@@ -2,51 +2,18 @@
   max-width: 180px;
   border: 20px solid #898989;
   background-color: #898989;
-  border-radius: 8px; 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-  transition: transform 0.3s ease, background-color 0.3s ease; 
-  overflow: hidden; 
+  padding: 10px;
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(91, 16, 132, 0.2); 
+  transition: background-color 0.3s, border-color 0.3s; 
 }
 
 .card img {
   max-width: 100%; 
-  height: auto; 
   object-fit: contain;
 }
 
 .card:hover {
-  border: 20px solid #3f3f3f;
-  background-color: #3f3f3f;
-  transform: translateY(-5px); 
-}
-
-.card-content {
-  padding: 10px; 
-  color: #ffffff; 
-  text-align: center; 
-}
-
-.card-title {
-  font-weight: bold; 
-  font-size: 1.2rem; 
-}
-
-.card-description {
-  font-size: 0.9rem; 
-}
-
-
-@media (max-width: 768px) {
-  .card {
-    max-width: 150px; 
-    border: 15px solid #898989; 
-  }
-
-  .card-title {
-    font-size: 1rem; 
-  }
-
-  .card-description {
-    font-size: 0.8rem; 
-  }
+  border: 20px solid #9e518c;
+  background-color: #9e518c;
 }

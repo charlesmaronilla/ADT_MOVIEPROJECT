@@ -1,196 +1,154 @@
-import { useState, useRef, useCallback } from 'react';
-import './Register.css';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Register.css';
 import axios from 'axios';
 
 function Register() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [contactNo, setContactNo] = useState('');
-  const [role, setRole] = useState('');
-  const [hasDirtyFields, setHasDirtyFields] = useState(false);
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
-  const firstNameInputRef = useRef();
-  const lastNameInputRef = useRef();
-  const contactNoInputRef = useRef();
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [loadingStatus, setLoadingStatus] = useState('idle');
-  const [errorText, setErrorText] = useState('');
-
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    middleName: '',
+    contactNo: '',
+    role: 'user', // Default role
+  });
   const navigate = useNavigate();
+  const [status, setStatus] = useState('idle');
+  const [isFieldsDirty, setIsFieldsDirty] = useState(false);
 
-  const togglePasswordVisibility = useCallback(() => {
-    setIsPasswordVisible(prev => !prev);
-  }, []);
-
-  const handleInputChange = (event, fieldType) => {
-    setHasDirtyFields(true);
-    switch (fieldType) {
-      case 'email':
-        setEmail(event.target.value);
-        break;
-      case 'password':
-        setPassword(event.target.value);
-        break;
-      case 'firstName':
-        setFirstName(event.target.value);
-        break;
-      case 'middleName':
-        setMiddleName(event.target.value);
-        break;
-      case 'lastName':
-        setLastName(event.target.value);
-        break;
-      case 'contactNo':
-        setContactNo(event.target.value);
-        break;
-      case 'role':
-        setRole(event.target.value);
-        break;
-      default:
-        break;
-    }
+  const handleOnChange = (event) => {
+    setIsFieldsDirty(true);
+    const { name, value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
-  const handleRegistration = async () => {
-    const userData = { email, password, firstName, middleName, lastName, contactNo, role };
-    setLoadingStatus('loading');
-    setErrorText(''); // Clear any previous error messages
+  const handleRegister = async () => {
+    if (formData.email && formData.password && formData.firstName && formData.lastName && formData.contactNo) {
+      setStatus('loading');
+      try {
+        await axios.post('/user/register', formData, {
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-    try {
-      const response = await axios.post('/admin/register', userData);
-      console.log(response);
-      navigate('/main/dashboard');
-    } catch (error) {
-      console.error(error);
-      setErrorText(error.response ? error.response.data.message : 'Registration failed');
-    } finally {
-      setLoadingStatus('idle');
+        alert('User registered successfully');
+
+        // Show spinner for exactly 3 seconds before logging in
+        setTimeout(async () => {
+          try {
+            const res = await axios({
+              method: 'post',
+              url: '/user/login',
+              data: { email: formData.email, password: formData.password },
+              headers: { 'Access-Control-Allow-Origin': '*' },
+            });
+            console.log(res);
+            localStorage.setItem('accessToken', res.data.access_token);
+            navigate('/home');
+          } catch (e) {
+            console.log(e);
+            alert('Failed to log in after registration');
+          } finally {
+            setStatus('idle');
+          }
+        }, 3000);
+      } catch (error) {
+        console.log(error);
+        setStatus('idle');
+        alert('Failed to register');
+      }
+    } else {
+      setIsFieldsDirty(true);
+      alert('All fields are required!');
     }
   };
 
   return (
     <div className='Register'>
       <div className='main-container'>
-        <h3>Register</h3>
-        {errorText && <div className="error-message">{errorText}</div>}
+        <h3>Sign Up</h3>
         <form>
-          <div className='form-container'>
+          <div className='form-containerg'>
             <div className='form-group'>
               <label>Email:</label>
               <input
-                type='text'
-                ref={emailInputRef}
-                onChange={(e) => handleInputChange(e, 'email')}
+                type='email'
+                name='email'
+                value={formData.email}
+                onChange={handleOnChange}
+                required
               />
-              {hasDirtyFields && email === '' && (
-                <span className='errors'>This field is required</span>
-              )}
             </div>
             <div className='form-group'>
               <label>Password:</label>
               <input
-                type={isPasswordVisible ? 'text' : 'password'}
-                ref={passwordInputRef}
-                onChange={(e) => handleInputChange(e, 'password')}
+                type='password'
+                name='password'
+                value={formData.password}
+                onChange={handleOnChange}
+                required
               />
-              {hasDirtyFields && password === '' && (
-                <span className='errors'>This field is required</span>
-              )}
             </div>
             <div className='form-group'>
               <label>First Name:</label>
               <input
                 type='text'
-                ref={firstNameInputRef}
-                onChange={(e) => handleInputChange(e, 'firstName')}
-              />
-              {hasDirtyFields && firstName === '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-            <div className='form-group'>
-              <label>Middle Name:</label>
-              <input
-                type='text'
-                onChange={(e) => handleInputChange(e, 'middleName')}
+                name='firstName'
+                value={formData.firstName}
+                onChange={handleOnChange}
+                required
               />
             </div>
             <div className='form-group'>
               <label>Last Name:</label>
               <input
                 type='text'
-                ref={lastNameInputRef}
-                onChange={(e) => handleInputChange(e, 'lastName')}
+                name='lastName'
+                value={formData.lastName}
+                onChange={handleOnChange}
+                required
               />
-              {hasDirtyFields && lastName === '' && (
-                <span className='errors'>This field is required</span>
-              )}
             </div>
             <div className='form-group'>
-              <label>Contact No:</label>
+              <label>Middle Name:</label>
               <input
                 type='text'
-                ref={contactNoInputRef}
-                onChange={(e) => handleInputChange(e, 'contactNo')}
+                name='middleName'
+                value={formData.middleName}
+                onChange={handleOnChange}
               />
-              {hasDirtyFields && contactNo === '' && (
-                <span className='errors'>This field is required</span>
-              )}
             </div>
             <div className='form-group'>
-              <label>Role:</label>
-              <select onChange={(e) => handleInputChange(e, 'role')}>
-                <option value=''>Select Role</option>
-                <option value='admin'>Admin</option>
-                <option value='user'>User</option>
-                {/* Additional roles can be added here */}
-              </select>
-              {hasDirtyFields && role === '' && (
-                <span className='errors'>This field is required</span>
-              )}
-            </div>
-            <div className='show-password' onClick={togglePasswordVisibility}>
-              {isPasswordVisible ? 'Hide' : 'Show'} Password
+              <label>Contacts:</label>
+              <input
+                type='text'
+                name='contactNo'
+                value={formData.contactNo}
+                onChange={handleOnChange}
+                required
+              />
             </div>
             <div className='submit-container'>
               <button
+                className='btn-register'
                 type='button'
-                disabled={loadingStatus === 'loading'}
-                onClick={() => {
-                  if (loadingStatus === 'loading') {
-                    return;
-                  }
-                  if (email && password && firstName && lastName && contactNo && role) {
-                    handleRegistration();
-                  } else {
-                    setHasDirtyFields(true);
-                    if (email === '') {
-                      emailInputRef.current.focus();
-                    } else if (password === '') {
-                      passwordInputRef.current.focus();
-                    } else if (firstName === '') {
-                      firstNameInputRef.current.focus();
-                    } else if (lastName === '') {
-                      lastNameInputRef.current.focus();
-                    } else if (contactNo === '') {
-                      contactNoInputRef.current.focus();
-                    } else if (role === '') {
-                      document.querySelector('select').focus();
-                    }
-                  }
-                }}
+                onClick={handleRegister}
+                disabled={status === 'loading'}
               >
-                {loadingStatus === 'idle' ? 'Register' : 'Loading'}
+                {status === 'loading' ? (
+                  <div className='loading-spinner'></div>
+                ) : (
+                  'Register'
+                )}
               </button>
             </div>
-            <div className='login-container'>
+            <div className='reg-container'>
+              <small>Already have an account? </small>
               <a href='/login'>
-                <small>Already have an account? Login</small>
+                <small>Log In</small>
               </a>
             </div>
           </div>

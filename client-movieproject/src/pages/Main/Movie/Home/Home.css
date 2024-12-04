@@ -1,53 +1,75 @@
-.featured-movie-container {
- 
+.main-containerr {
+  padding: 20px;
+  color: #fff;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-title {
-  font-size: 4.5rem;
-  text-align: center; 
-}
-
-.list-container {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1;
-  gap: 1rem;
+  font-family: 'Arial Black', sans-serif;
+  font-size: 3rem;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(81, 55, 158, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: -25px 0;
+  text-align: justify;
+  margin-left: 105px;
 }
 
 .featured-list-container {
-  width: 100%;
-  margin-bottom: 5rem;
-  aspect-ratio: 16 / 9;
+  width: 84.4%;
+  height: 550px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center; 
+  align-items: center;    
+  border-radius: 4px;
+  margin: 30px auto;     
 }
 
+
 .featured-backdrop {
-  height: 100%;
   width: 100%;
-  background-size: cover !important;
+  height: 100%;
   display: flex;
-  align-items: flex-end; 
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+  background-size: cover;
 }
 
 .featured-movie-title {
-  font-weight: bold;
-  font-size: 3rem;
+  background: rgba(72, 49, 173, 0.7);
+  padding: 10px;
+  position: absolute;
+  top: 480px;
+  left: 15px;
+  border-radius: 5px;
+}
+
+.list-container {
+  display: grid;
+  grid-template-columns: repeat(5, 2fr);
+  gap: 20px;
   width: 100%;
-  padding: 2rem;
-  color: white; 
-  text-shadow: 2px 2px 4px rgba(0, 0 , 0, 0, 0.5);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.loading-indicator {
-  font-size: 2rem;
-  text-align: center; 
-  margin-top: 2rem; 
-}
-
-.featured-list-container-loader {
-  height: 100%; 
+.MovieCards {
+  height: 300px;
+  background-color: #5130a7;
+  border-radius: 5px;
   display: flex;
-  justify-content: center; 
-  align-items: center; 
-  font-size: 1.5rem; 
-  color: #61dafb; 
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
 }
