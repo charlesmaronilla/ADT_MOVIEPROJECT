@@ -1,12 +1,103 @@
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #237d2d;
+  margin-top: 1rem;
+}
+
+.movie-container {
+  width: 80%;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field label {
+  font-weight: 600;
+  color: #237d2d;
+}
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.butt {
+  display: flex;
+  justify-content: space-between;
+}
+
+.butt button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease;
+}
+
+.butt button:first-of-type {
+  background-color: #237d2d;
+  color: #fff;
+}
+
+.butt button:first-of-type:hover {
+  background-color: #1d6f44;
+}
+
+.butt button:last-of-type {
+  background-color: #f4a261;
+  color: #fff;
+}
+
+.butt button:last-of-type:hover {
+  background-color: #e76f51;
+}
+
 .searched-movie {
   max-height: 200px;
   overflow-y: auto;
+  margin-top: 1rem;
 }
+
 .search-container p:hover {
   background-color: lightblue;
+  cursor: pointer;
 }
 
 .poster-image {
   width: 150px;
   height: auto;
+  display: block;
+  margin: 1rem auto;
 }

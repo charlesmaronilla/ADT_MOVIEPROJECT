@@ -1,39 +1,78 @@
 .Main {
   display: flex;
+  flex-direction: column;
   overflow: hidden;
   max-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  color: #16763e;
 }
-.Main .container {
+
+.header {
   display: flex;
-  width: 100vw;
-}
-.Main .container .outlet {
-  flex-grow: 3;
+  align-items: center;
+  justify-content: space-between;
   padding: 1rem;
-}
-.Main .container .navigation {
-  background-color: aliceblue;
-  padding-top: 40px;
-  height: 100vh;
-}
-.Main .container .navigation ul {
-  list-style: none;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
+  background-color: #237d2d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.Main .container .navigation ul li {
-  padding: 10px 80px 10px 20px;
-}
-.Main .container .navigation ul li.active,
-.Main .container .navigation ul li:hover {
-  background: #ccc;
-}
-.Main .container .navigation ul li a {
-  text-decoration: none;
+.nav-container {
+  display: flex;
+  gap: 1rem;
 }
 
-.Main .container .navigation ul li.logout {
+.navigate-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  background-color: #1d6f44;
+  color: white;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease;
+}
+
+.navigate-button:hover {
+  background-color: #14532d;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background-color: #16763e; /* Dark background */
+}
+
+.outlet {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background: linear-gradient(to bottom right, #1e1e2f, #2c2c44);
+  border-radius: 12px;
+  margin: 1rem;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(255, 255, 255, 0.2); /* Faded outer ring */
+  border-top: 6px solid #ffffff; /* Bright spinner */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }

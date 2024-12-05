@@ -19,7 +19,7 @@ const Form = () => {
   const accessToken = localStorage.getItem('accessToken');
 
   const handleSave = async () => {
-    if (!validateForm()) return; 
+    if (!validateForm()) return;
 
     const data = {
       tmdbId: movie.tmdbId || null,
@@ -42,7 +42,6 @@ const Form = () => {
       console.log('Response from API:', response.data);
       alert('Movie added successfully');
 
-     
       setMovie({
         title: '',
         overview: '',
@@ -66,7 +65,7 @@ const Form = () => {
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name ]: '', 
+      [name]: '',
     }));
   };
 
@@ -76,7 +75,7 @@ const Form = () => {
     if (!movie.overview?.trim()) newErrors.overview = 'Overview is required';
     if (!movie.releaseDate) newErrors.releaseDate = 'Release date is required';
     setErrors(newErrors);
-    console.log('Validation errors:', newErrors); 
+    console.log('Validation errors:', newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -91,7 +90,7 @@ const Form = () => {
       });
       console.log('Update response:', response.data);
       alert('Movie details updated successfully');
-      navigate('/main/movies'); 
+      navigate('/main/movies');
     } catch (error) {
       console.error('Error updating movie details:', error);
       alert('Failed to update movie details. Please try again.');
@@ -117,7 +116,7 @@ const Form = () => {
       <div className='movie-container'>
         <form>
           <div className='field'>
-            Title:
+            <label>Title:</label>
             <input
               type='text'
               name='title'
@@ -127,7 +126,7 @@ const Form = () => {
             {errors.title && <span className='error'>{errors.title}</span>}
           </div>
           <div className='field'>
-            Overview:
+            <label>Overview:</label>
             <textarea
               rows={10}
               name='overview'
@@ -138,7 +137,7 @@ const Form = () => {
           </div>
 
           <div className='field'>
-            Popularity:
+            <label>Popularity:</label>
             <input
               type='text'
               name='popularity'
@@ -148,7 +147,7 @@ const Form = () => {
           </div>
 
           <div className='field'>
-            Release Date:
+            <label>Release Date:</label>
             <input
               type='text'
               name='releaseDate'
@@ -159,7 +158,7 @@ const Form = () => {
           </div>
 
           <div className='field'>
-            Vote Average:
+            <label>Vote Average:</label>
             <input
               type='text'
               name='voteAverage'

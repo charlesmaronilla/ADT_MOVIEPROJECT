@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import './Login.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDebounce } from '../../../utils/hooks/useDebounce';
 import axios from 'axios';
 
@@ -17,9 +17,10 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleShowPassword = useCallback(() => {
+  const handleShowPassword = useCallback((event) => {
+    event.preventDefault();
     setIsShowPassword((value) => !value);
-  }, [isShowPassword]);
+  }, []);
 
   const handleOnChange = (event, type) => {
     setDebounceState(false);
@@ -28,7 +29,6 @@ function Login() {
     switch (type) {
       case 'email':
         setEmail(event.target.value);
-
         break;
 
       case 'password':
@@ -43,25 +43,18 @@ function Login() {
   const handleLogin = async () => {
     const data = { email, password };
     setStatus('loading');
-    console.log(data);
-
-    await axios({
-      method: 'post',
-      url: '/admin/login',
-      data,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => {
-        console.log(res);
-        localStorage.setItem('accessToken', res.data.access_token);
-        navigate('/main');
-        setStatus('idle');
-      })
-      .catch((e) => {
-        console.log(e);
-        setStatus('idle');
-        // alert(e.response.data.message);
+    try {
+      const res = await axios.post('/admin/login', data, {
+        headers: { 'Access-Control-Allow-Origin': '*' },
       });
+      localStorage.setItem('accessToken', res.data.access_token);
+      navigate('/main');
+    } catch (error) {
+      console.error(error);
+      alert('Login failed. Please try again.');
+    } finally {
+      setStatus('idle');
+    }
   };
 
   useEffect(() => {
@@ -69,64 +62,53 @@ function Login() {
   }, [userInputDebounce]);
 
   return (
-    <div className='Login'>
-      <div className='main-container'>
+    <div className="Login">
+      <div className="main-container">
         <h3>Login</h3>
         <form>
-          <div className='form-container'>
-            <div>
-              <div className='form-group'>
-                <label>E-mail:</label>
-                <input
-                  type='text'
-                  name='email'
-                  ref={emailRef}
-                  onChange={(e) => handleOnChange(e, 'email')}
-                />
-              </div>
+          <div className="form-container">
+            <div className="form-group">
+              <label>E-mail:</label>
+              <input
+                type="text"
+                name="email"
+                ref={emailRef}
+                onChange={(e) => handleOnChange(e, 'email')}
+              />
               {debounceState && isFieldsDirty && email === '' && (
-                <span className='errors'>This field is required</span>
+                <span className="errors">This field is required</span>
               )}
             </div>
-            <div>
-              <div className='form-group'>
-                <label>Password:</label>
-                <input
-                  type={isShowPassword ? 'text' : 'password'}
-                  name='password'
-                  ref={passwordRef}
-                  onChange={(e) => handleOnChange(e, 'password')}
-                />
-              </div>
+            
+            <div className="form-group">
+              <label>Password:</label>
+              <input
+                type={isShowPassword ? 'text' : 'password'}
+                name="password"
+                ref={passwordRef}
+                onChange={(e) => handleOnChange(e, 'password')}
+              />
               {debounceState && isFieldsDirty && password === '' && (
-                <span className='errors'>This field is required</span>
+                <span className="errors">This field is required</span>
               )}
-            </div>
-            <div className='show-password' onClick={handleShowPassword}>
-              {isShowPassword ? 'Hide' : 'Show'} Password
             </div>
 
-            <div className='submit-container'>
+            <button className="show-password" onClick={handleShowPassword}>
+              {isShowPassword ? 'Hide' : 'Show'} Password
+            </button>
+
+            <div className="submit-container">
               <button
-                type='button'
+                type="button"
                 disabled={status === 'loading'}
                 onClick={() => {
-                  if (status === 'loading') {
-                    return;
-                  }
-                  if (email && password) {
-                    handleLogin({
-                      type: 'login',
-                      user: { email, password },
-                    });
-                  } else {
-                    setIsFieldsDirty(true);
-                    if (email === '') {
-                      emailRef.current.focus();
-                    }
-
-                    if (password === '') {
-                      passwordRef.current.focus();
+                  if (status !== 'loading') {
+                    if (email && password) {
+                      handleLogin();
+                    } else {
+                      setIsFieldsDirty(true);
+                      if (email === '') emailRef.current.focus();
+                      if (password === '') passwordRef.current.focus();
                     }
                   }
                 }}
@@ -134,10 +116,11 @@ function Login() {
                 {status === 'idle' ? 'Login' : 'Loading'}
               </button>
             </div>
-            <div className='register-container'>
-              <a href='/register'>
+            <div className="register-container">
+              <small>Don't have an account? </small>
+              <Link to="/register">
                 <small>Register</small>
-              </a>
+              </Link>
             </div>
           </div>
         </form>
