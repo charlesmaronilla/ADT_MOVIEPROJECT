@@ -66,7 +66,7 @@
   width: 100%;
   background-color: #004d40; 
   padding: 0.9rem;
-  color: #d7ccc8; 
+  color: #000803; 
   font-size: 1.2rem;
   font-weight: bold;
   border: none;
@@ -76,7 +76,7 @@
 }
 
 .submit-container-register .btn-register:hover {
-  background-color: #00695c; 
+  background-color: #217356; 
 }
 
 .reg-container-register {
@@ -88,7 +88,7 @@
 }
 
 .reg-container-register a {
-  color: #80cbc4; 
+  color: #031614; 
   text-decoration: none;
 }
 
