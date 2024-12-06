@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Register.css';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ function Register() {
     lastName: '',
     middleName: '',
     contactNo: '',
-    role: 'user', // Default role
+    role: 'user',
   });
   const navigate = useNavigate();
   const [status, setStatus] = useState('idle');
@@ -33,32 +33,13 @@ function Register() {
         await axios.post('/user/register', formData, {
           headers: { 'Content-Type': 'application/json' },
         });
-
         alert('User registered successfully');
-
-        // Show spinner for exactly 3 seconds before logging in
-        setTimeout(async () => {
-          try {
-            const res = await axios({
-              method: 'post',
-              url: '/user/login',
-              data: { email: formData.email, password: formData.password },
-              headers: { 'Access-Control-Allow-Origin': '*' },
-            });
-            console.log(res);
-            localStorage.setItem('accessToken', res.data.access_token);
-            navigate('/home');
-          } catch (e) {
-            console.log(e);
-            alert('Failed to log in after registration');
-          } finally {
-            setStatus('idle');
-          }
-        }, 3000);
+        navigate('/login');
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        alert('Registration failed. Please try again.');
+      } finally {
         setStatus('idle');
-        alert('Failed to register');
       }
     } else {
       setIsFieldsDirty(true);
@@ -67,89 +48,93 @@ function Register() {
   };
 
   return (
-    <div className='Register'>
-      <div className='main-container'>
+    <div className="Register">
+      <div className="main-container">
         <h3>Sign Up</h3>
         <form>
-          <div className='form-containerg'>
-            <div className='form-group'>
+          
+          <div className="form-container">
+            <div className="form-group">
               <label>Email:</label>
               <input
-                type='email'
-                name='email'
+                type="email"
+                name="email"
                 value={formData.email}
                 onChange={handleOnChange}
                 required
               />
             </div>
-            <div className='form-group'>
+
+            <div className="form-group">
               <label>Password:</label>
               <input
-                type='password'
-                name='password'
+                type="password"
+                name="password"
                 value={formData.password}
                 onChange={handleOnChange}
                 required
               />
             </div>
-            <div className='form-group'>
+
+            <div className="form-group">
               <label>First Name:</label>
               <input
-                type='text'
-                name='firstName'
+                type="text"
+                name="firstName"
                 value={formData.firstName}
                 onChange={handleOnChange}
                 required
               />
             </div>
-            <div className='form-group'>
+
+            <div className="form-group">
               <label>Last Name:</label>
               <input
-                type='text'
-                name='lastName'
+                type="text"
+                name="lastName"
                 value={formData.lastName}
                 onChange={handleOnChange}
                 required
               />
             </div>
-            <div className='form-group'>
+
+            <div className="form-group">
               <label>Middle Name:</label>
               <input
-                type='text'
-                name='middleName'
+                type="text"
+                name="middleName"
                 value={formData.middleName}
                 onChange={handleOnChange}
               />
             </div>
-            <div className='form-group'>
-              <label>Contacts:</label>
+
+            <div className="form-group">
+              <label>Contact No:</label>
               <input
-                type='text'
-                name='contactNo'
+                type="text"
+                name="contactNo"
                 value={formData.contactNo}
                 onChange={handleOnChange}
                 required
               />
             </div>
-            <div className='submit-container'>
+
+            <div className="submit-container">
               <button
-                className='btn-register'
-                type='button'
+                className="btn-register"
+                type="button"
                 onClick={handleRegister}
                 disabled={status === 'loading'}
               >
-                {status === 'loading' ? (
-                  <div className='loading-spinner'></div>
-                ) : (
-                  'Register'
-                )}
+                {status === 'loading' ? 'Loading...' : 'Register'}
               </button>
             </div>
-            <div className='reg-container'>
+
+            <div className="reg-container">
               <small>Already have an account? </small>
-              <a href='/login'>
+              <Link to="/login">
                 <small>Log In</small>
-              </a>
+              </Link>
             </div>
           </div>
         </form>

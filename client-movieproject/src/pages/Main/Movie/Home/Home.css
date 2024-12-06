@@ -1,6 +1,6 @@
 .main-containerr {
   padding: 20px;
-  color: #fff;
+  color: #2b895c;
   width: 95%;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@
   font-family: 'Arial Black', sans-serif;
   font-size: 3rem;
   color: #ffffff;
-  text-shadow: 2px 2px 4px rgba(81, 55, 158, 0.7);
+  text-shadow: 2px 2px 4px rgb(44, 126, 82);
   text-transform: uppercase;
   letter-spacing: 2px;
   margin: -25px 0;
@@ -45,7 +45,7 @@
 }
 
 .featured-movie-title {
-  background: rgba(72, 49, 173, 0.7);
+  background: rgb(6, 24, 28);
   padding: 10px;
   position: absolute;
   top: 480px;
@@ -64,12 +64,12 @@
 
 .MovieCards {
   height: 300px;
-  background-color: #5130a7;
+  background-color: #228835;
   border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: rgb(255, 255, 255);
   font-size: 1.2rem;
   text-align: center;
 }

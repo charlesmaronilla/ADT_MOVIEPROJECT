@@ -1,73 +1,78 @@
+:root {
+  --dark-green: #14532d; 
+  --light-green: #16763e; 
+  --white-color: #fff;
+  --button-bg: #1d6f44;
+  --button-hover: #237d2d;
+}
+
 .Main {
   display: flex;
+  flex-direction: column;
   overflow: hidden;
   max-height: 100vh;
-}
-.Main .container {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-}
-.Main .container .outlet {
-  flex-grow: 3;
-  padding: 1rem;
-  overflow-y: auto;
-}
-.Main .container .navigation {
-  height: 80px;
-  background-color: #884394;
-  width: 100%;
-}
-.Main .container .navigation ul {
-  list-style: none;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  display: flex;
+  font-family: 'Arial', sans-serif;
+  color: var(--white-color);
+  background-color: var(--dark-green);
 }
 
-.Main .container .navigation ul li {
-  padding: 0px 60px;
+.header {
   height: 80px;
+  background-color: var(--light-green);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  color: #61dafb;
-  font-weight: bold;
-}
-.Main .container .navigation ul li a {
-  text-decoration: none;
-  color: #61dafb;
-}
-.Main .container .navigation ul li.active a,
-.Main .container .navigation ul li:hover a {
-  text-decoration: none;
-  color: white;
-}
-.Main .container .navigation ul li.active,
-.Main .container .navigation ul li:hover {
-  background: #4e3e96;
-}
-.Main .container .navigation ul li a {
-  text-decoration: none;
+  justify-content: space-between;
+  padding: 0 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.Main .container .navigation ul li.logout,
-.Main .container .navigation ul li.login {
+.nav-container {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 1rem;
+}
+
+.navigate-button {
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  justify-self: end;
+  background-color: var(--button-bg);
+  color: var(--white-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navigate-button:hover {
+  background-color: var(--button-hover);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px); 
+}
+
+.navigate-button:active {
+  transform: translateY(0); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.outlet {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background: linear-gradient(to bottom right, var(--dark-green), var(--light-green));
+  border-radius: 12px;
+  margin: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(0, 0, 0, 0.1);
-  border-top: 5px solid #3498db; /* Spinner color */
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(255, 255, 255, 0.2); 
+  border-top: 6px solid var(--white-color); 
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin: auto;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -82,5 +87,3 @@
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
-
-

@@ -8,52 +8,42 @@ function Main() {
   const accessToken = useMemo(() => localStorage.getItem('accessToken'), []);
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm('Are you sure you want to logout?'); 
+    const confirmLogout = window.confirm('Are you sure you want to logout?');
     if (confirmLogout) {
-      setIsLoggingOut(true); 
+      setIsLoggingOut(true);
       setTimeout(() => {
         localStorage.removeItem('accessToken');
-        setIsLoggingOut(false); 
-        navigate('/login'); 
-      }, 3000); 
+        setIsLoggingOut(false);
+        navigate('/login');
+      }, 3000);
     }
   };
 
   useEffect(() => {
-    // Navigate to login if accessToken is not present
-    if (!accessToken) { 
-      navigate('/login'); 
+    if (!accessToken) {
+      navigate('/login');
     }
-  }, [accessToken, navigate]); 
+  }, [accessToken, navigate]);
 
   return (
     <div className="Main">
-      <div className="container">
-        <div className="navigation">
-          <ul>
-            <li>
-              <button onClick={() => navigate('/home')}>
-                Movies</button>
-            </li>
-            {accessToken ? (
-              <li className="logout">
-                <button onClick={handleLogout}>
-                  Sign OUT</button>
-              </li>
-            ) : (
-              <li className="login">
-                <button onClick={() => navigate('/login')}>Sign IN</button>
-              </li>
-            )}
-          </ul>
+      <div className="header">
+        <div className="nav-container">
+          <button onClick={() => navigate('/home')} className="navigate-button">
+            Home
+          </button>
+          <button onClick={handleLogout} className="navigate-button">
+            Sign Out
+          </button>
         </div>
-        <div className="outlet">
-          {isLoggingOut ? (
-            <div className="loading-spinner"></div>
-          ) : (
-            <Outlet />
-          )}
-        </div>
+      </div>
+
+      <div className="outlet">
+        {isLoggingOut ? (
+          <div className="loading-spinner"></div>
+        ) : (
+          <Outlet />
+        )}
       </div>
     </div>
   );

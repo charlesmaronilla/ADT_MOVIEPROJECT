@@ -51,7 +51,7 @@ function Login() {
         console.log(res);
         localStorage.setItem('accessToken', res.data.access_token);
 
-        // Ensure the spinner is shown for 3 seconds
+        
         setTimeout(() => {
           setStatus('idle');
           navigate('/home');
@@ -60,7 +60,7 @@ function Login() {
     } catch (e) {
       console.log(e);
 
-      // Ensure the spinner is shown for 3 seconds even on error
+     
       setTimeout(() => {
         setStatus('idle');
       }, 3000);

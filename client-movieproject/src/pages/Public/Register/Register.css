@@ -11,95 +11,87 @@
   position: relative;
 }
 
-.main-container {
-  width: 400px; /* Increased width for the form to accommodate two inputs per row */
-  border-radius: 0.75rem;
-  background-color: #000000;
+.main-container-register {
+  width: 400px;
+  border-radius: 12px;
+  background-color: #004d40; 
   padding: 2rem;
-  color: rgba(243, 244, 246, 1);
+  color: #d7ccc8; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.main-container h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #fff;
+.main-container-register h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #d7ccc8; 
+  text-align: center;
 }
 
-.form-containerg {
+.form-container-register {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns for inputs */
-  gap: 1rem; /* Space between the columns and rows */
+  grid-template-columns: 1fr 1fr; 
+  gap: 1rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+.form-group-register label {
+  display: block;
+  color: #d7ccc8;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
-.form-group label {
-  color: rgba(156, 163, 175, 1);
-  margin-bottom: 4px;
-}
-
-.form-group input {
+.form-group-register input {
   padding: 0.8rem;
   font-size: 1rem;
-  background: #5a2a3a; /* Dark maroon color */
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+  background: #d7ccc8; /* Light Beige */
+  color: #004d40; /* Dark Green */
+  border: 1px solid #004d40;
+  border-radius: 8px;
   outline: none;
   width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
 }
 
-.form-group input:focus {
-  border: 2px solid rgba(167, 139, 250);
+.form-group-register input:focus {
+  border: 2px solid #80cbc4; 
 }
 
-.submit-container {
-  grid-column: span 2; /* Button spans both columns */
+.submit-container-register {
+  grid-column: span 2; 
   margin-top: 1rem;
-  text-align: center;
 }
 
-.btn-register {
-  display: inline-block;
+.submit-container-register .btn-register {
   width: 100%;
-  background-color: #ff133d;
-  padding: 0.75rem;
-  text-align: center;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 800;
+  background-color: #004d40; 
+  padding: 0.9rem;
+  color: #000803; 
+  font-size: 1.2rem;
+  font-weight: bold;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.btn-register:hover {
-  background-color: #e6003c;
+.submit-container-register .btn-register:hover {
+  background-color: #217356; 
 }
 
-.reg-container {
-  grid-column: span 2; /* Centers the login text below the form */
+.reg-container-register {
+  grid-column: span 2; 
   margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #aaa;
   text-align: center;
+  font-size: 0.9rem;
+  color: #d7ccc8; 
 }
 
-.reg-container a {
-  color: #fff;
+.reg-container-register a {
+  color: #031614; 
   text-decoration: none;
 }
 
-.reg-container a:hover {
+.reg-container-register a:hover {
   text-decoration: underline;
-}
-
-/* For fields that need to take the full width */
-.form-group.full-width {
-  grid-column: span 2; /* Spans across both columns */
 }
