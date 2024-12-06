@@ -10,15 +10,14 @@ function Main() {
   const handleLogout = () => {
     const confirmLogout = window.confirm('Are you sure you want to logout?');
     if (confirmLogout) {
-      setIsLoggingOut(true); // Set loading state
+      setIsLoggingOut(true);
       setTimeout(() => {
-        localStorage.removeItem('accessToken'); // Remove the access token
-        setIsLoggingOut(false); // Reset loading state
-        navigate('/login'); // Navigate to the login page
-      }, 3000); // Delay of 3 seconds
+        localStorage.removeItem('accessToken');
+        setIsLoggingOut(false);
+        navigate('/login');
+      }, 3000);
     }
   };
-
   useEffect(() => {
     if (!accessToken) {
       navigate('/login');
@@ -33,16 +32,19 @@ function Main() {
             Dashboard
           </button>
           <button onClick={handleLogout} className='navigate-button'>
-            Sign OUT
+            Sign Out
           </button>
         </div>
       </div>
+
+      
       <div className='container'>
         <div className='outlet'>
           <Outlet />
         </div>
       </div>
-      {isLoggingOut && <div className='loading-spinner'></div>}
+      {isLoggingOut && <div className='loading-spinner'>
+        </div>}
     </div>
   );
 }
