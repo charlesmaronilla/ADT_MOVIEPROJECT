@@ -11,10 +11,10 @@ function Main() {
     const confirmLogout = window.confirm('Are you sure you want to logout?');
     if (confirmLogout) {
       setIsLoggingOut(true);
+      localStorage.removeItem('accessToken'); 
       setTimeout(() => {
-        localStorage.removeItem('accessToken');
         setIsLoggingOut(false);
-        navigate('/login');
+        navigate('/login'); 
       }, 3000);
     }
   };
@@ -32,6 +32,9 @@ function Main() {
           <button onClick={() => navigate('/home')} className="navigate-button">
             Home
           </button>
+          <button onClick={() => navigate('/login')} className="navigate-button">
+            Login
+          </button>
           <button onClick={handleLogout} className="navigate-button">
             Sign Out
           </button>
@@ -40,7 +43,7 @@ function Main() {
 
       <div className="outlet">
         {isLoggingOut ? (
-          <div className="loading-spinner"></div>
+          <div className="loading-spinner">Logging out...</div> 
         ) : (
           <Outlet />
         )}
