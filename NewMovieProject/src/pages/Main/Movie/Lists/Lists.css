@@ -63,13 +63,13 @@
   background-color: #ddd;
 }
 
-/* Title cell styling */
+
 .movie-lists td.title-cell {
   font-weight: bold;
   color: #333;
 }
 
-/* Action buttons */
+
 .movie-lists td button {
   padding: 8px 12px;
   font-size: 14px;

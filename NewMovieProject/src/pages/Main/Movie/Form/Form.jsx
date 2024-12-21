@@ -88,7 +88,7 @@ const Form = () => {
         setVideos(response.data.results);
         setFormData(prevData => ({
           ...prevData,
-          videos: response.data.results, // Save videos to formData
+          videos: response.data.results, 
         }));
       })
       .catch(() => {

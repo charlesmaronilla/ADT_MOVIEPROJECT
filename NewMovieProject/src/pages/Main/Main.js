@@ -24,29 +24,20 @@ function Main() {
     }
   }, [accessToken, navigate]);
 
-  return (
-    <div className='Main'>
-      <div className='header'>
-        <div className='nav-container'>
-          <button onClick={() => navigate('/main/dashboard')} className='navigate-button'>
-            Dashboard
-          </button>
-          <button onClick={handleLogout} className='navigate-button'>
-            Sign Out
-          </button>
-        </div>
-      </div>
-
-      
-      <div className='container'>
-        <div className='outlet'>
-          <Outlet />
-        </div>
-      </div>
-      {isLoggingOut && <div className='loading-spinner'>
-        </div>}
-    </div>
-  );
+  return ( 
+  <div className='Main'> 
+  <div className='header'> 
+    <div className='nav-container'> 
+      <button onClick={() => navigate('/main/dashboard')} 
+      className='navigate-button'> Dashboard </button> 
+      <button onClick={() => { handleLogout(); navigate('/login'); }}
+       className='navigate-button'> 
+       Sign Out </button> 
+       </div> </div> 
+       <div className='container'> 
+        <div className='outlet'> <Outlet /> 
+        </div> </div> {isLoggingOut && <div className='loading-spinner'> </div>} </div> 
+        );
 }
 
 export default Main;
